@@ -100,3 +100,11 @@ footer {
   font-size: 45px;
   margin-left: 1228px;
 }
+
+.taskItem {
+  border: 1px solid white;
+}
+
+.selectedItem {
+  border: 1px solid red;
+}
