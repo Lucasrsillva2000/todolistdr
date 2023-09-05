@@ -4,6 +4,8 @@
 const input = document.querySelector('#text')
 const addTaskButton = document.querySelector('#addTaskButton')
 const taskList = document.querySelector('#taskList')
+const taskUp = document.querySelector('#taskUp')
+const taskDown = document.querySelector('#taskDown')
 
 function addTask() {
   const inputValue = input.value
@@ -22,8 +24,35 @@ function addTask() {
   taskList.appendChild(content)
 }
 
+taskUp.addEventListener('click', function () {
+  const selectedItem = document.querySelector(
+    '.taskItem[style*="background-color: red"]'
+  )
+
+  const previousItem = selectedItem.previousElementSibling
+
+  if (previousItem) {
+    // Se houver um item anterior, mova o item selecionado para antes dele.
+    taskList.insertBefore(selectedItem, previousItem)
+  }
+})
+
+taskDown.addEventListener('click', function () {
+  const selectedItem = document.querySelector(
+    '.taskItem[style*="background-color: red"]'
+  )
+
+  const nextItem = selectedItem.nextElementSibling
+
+  if (nextItem) {
+    // Se houver um próximo item, mova o item selecionado para depois dele.
+    taskList.insertBefore(selectedItem, nextItem.nextElementSibling)
+  }
+})
+
 window.onload = () => {
   addTaskButton.onclick = addTask
+
   //removeTaskList.onclick = removeTask
 }
 
