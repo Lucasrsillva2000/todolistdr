@@ -1,33 +1,52 @@
-// const tasks = []
 // const removeTaskList = document.querySelector('#removeTaskList')
 
 const input = document.querySelector('#text')
 const addTaskButton = document.querySelector('#addTaskButton')
 const taskList = document.querySelector('#taskList')
-const taskUp = document.querySelector('#taskUp')
-const taskDown = document.querySelector('#taskDown')
+const moveTaskUp = document.querySelector('#taskUp')
+const moveTaskDown = document.querySelector('#taskDown')
 
+//ADICIONAR TASKS
 function addTask() {
   const inputValue = input.value
   const content = document.createElement('li')
 
+  if (inputValue == '') {
+    return
+  }
+
+  //checa se ta selecionado o LI, se estiver ele remove a seleção, e depois adiciona.
   content.addEventListener('click', function () {
-    content.style.backgroundColor = 'red'
+    const previousLiSelected = document.querySelector('.selectedItem')
+    if (previousLiSelected) {
+      previousLiSelected.classList.remove('selectedItem')
+    }
+    content.classList.add('selectedItem')
   })
+
+  //adiciona um sublinhado ao conteudo do li e remove ao dar double click.
   content.addEventListener('dblclick', function () {
-    content.style.backgroundColor = '#9ca3af'
+    if (content.classList.contains('markedText')) {
+      content.classList.remove('markedText')
+    } else {
+      const markedText = document.querySelector('.selectedItem')
+      if (markedText) {
+        markedText.classList.remove('markedText')
+      }
+      markedText.classList.add('markedText')
+    }
   })
 
   content.innerHTML = inputValue
+  input.value = ''
 
   content.classList.add('taskItem')
   taskList.appendChild(content)
 }
 
-taskUp.addEventListener('click', function () {
-  const selectedItem = document.querySelector(
-    '.taskItem[style*="background-color: red"]'
-  )
+//para mover as tasks para cima
+moveTaskUp.addEventListener('click', function () {
+  const selectedItem = document.querySelector('.selectedItem')
 
   const previousItem = selectedItem.previousElementSibling
 
@@ -37,10 +56,9 @@ taskUp.addEventListener('click', function () {
   }
 })
 
-taskDown.addEventListener('click', function () {
-  const selectedItem = document.querySelector(
-    '.taskItem[style*="background-color: red"]'
-  )
+//para mover as tasks para baixo
+moveTaskDown.addEventListener('click', function () {
+  const selectedItem = document.querySelector('.selectedItem')
 
   const nextItem = selectedItem.nextElementSibling
 
@@ -52,7 +70,6 @@ taskDown.addEventListener('click', function () {
 
 window.onload = () => {
   addTaskButton.onclick = addTask
-
   //removeTaskList.onclick = removeTask
 }
 
@@ -68,5 +85,15 @@ window.onload = () => {
 // parentNode.insertBefore
 // previousElementSibling
 // nextElementSibling
+
+//FAZER IGUAL AO SITE DO MAROMBA
+
+// ===                     // SELECIONAR UMA TASK POR VEZ, NÃO ESQUECER!!!
+// ===                     // FAZER O DOUBLE CLICK DA TASK, PARA APARECER A BOLA PRETA, E O TEXTO RISCADO.
+// CLICAR NO SAVE GAME PARA SALVAR AS TASKS COLOCADAS E TODOS OS ESTADOS
+// CLICAR NO REMOVER FINALIZADOS PARA REMOVER AS TASKS FINALIZADAS!!!!!!!!!!
+// CLICAR NA LIXEIRA PARA REMOVER TUDO!!!!!!!!
+//===                     // AO ADICIONAR A TASK, FAZER COM QUE O CONTEUDO DO INPUT VOLTE A FICAR VAZIO!!!
+// ADICIONAR O TOGGLE NAS SETAS (CLASSLIST.TOGGLE)
 
 //NÃO SER UM MERDA, PESQUISE E CONFIA NO CÓDIGO QUE FOI FEITO AQUI.

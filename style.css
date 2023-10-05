@@ -106,5 +106,9 @@ footer {
 }
 
 .selectedItem {
-  border: 1px solid red;
+  border: 3px solid black;
+}
+
+.markedText {
+  text-decoration: line-through;
 }
