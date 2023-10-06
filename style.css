@@ -82,23 +82,28 @@ footer {
 .ph-plus {
   color: #000;
   font-size: 45px;
+  cursor: pointer;
 }
 
 .ph-floppy-disk {
   font-size: 45px;
+  cursor: pointer;
 }
 
 .ph-arrow-up {
   font-size: 45px;
+  cursor: pointer;
 }
 
 .ph-arrow-down {
   font-size: 45px;
+  cursor: pointer;
 }
 
 .ph-trash {
   font-size: 45px;
   margin-left: 1228px;
+  cursor: pointer;
 }
 
 .taskItem {
