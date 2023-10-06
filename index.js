@@ -1,11 +1,11 @@
 const removeTaskList = document.querySelector('#removeTask')
-
 const input = document.querySelector('#text')
 const addTaskButton = document.querySelector('#addTaskButton')
 const taskList = document.querySelector('#taskList')
 const moveTaskUp = document.querySelector('#taskUp')
 const moveTaskDown = document.querySelector('#taskDown')
 const deleteTask = document.querySelector('#deleteTask')
+const saveTask = document.querySelector('#saveTask')
 
 //ADICIONAR TASKS
 function addTask() {
@@ -45,6 +45,7 @@ function addTask() {
   taskList.appendChild(content)
 }
 
+// remove somente as tasks que estão com o risco preto.
 function removeSelectedTask() {
   const markedText = document.querySelector('.markedText')
 
@@ -53,11 +54,13 @@ function removeSelectedTask() {
   }
 }
 
+//remove todas as tasks ao clicar na lixeira
 function removeAllTasks() {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild)
   }
 }
+
 //para mover as tasks para cima
 moveTaskUp.addEventListener('click', function () {
   const selectedItem = document.querySelector('.selectedItem')
@@ -82,10 +85,30 @@ moveTaskDown.addEventListener('click', function () {
   }
 })
 
+//função para usar o localStorage, para salvar o estado atual das tarefas.
+function saveTasks() {
+  const tasksArray = Array.from(taskList.children).map(task => task.innerHTML)
+  localStorage.setItem('tasks', JSON.stringify(tasksArray))
+}
+
+//função para verificar se tem tarefas no localStorage
+function loadTasks() {
+  const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]')
+  savedTasks.forEach(taskContent => {
+    const content = document.createElement('li')
+    content.innerHTML = taskContent
+    content.classList.add('taskItem')
+    // Aqui, você pode adicionar os listeners necessários ao LI (click e dblclick)
+    taskList.appendChild(content)
+  })
+}
+
 window.onload = () => {
+  loadTasks()
   addTaskButton.onclick = addTask
   removeTaskList.onclick = removeSelectedTask
   deleteTask.onclick = removeAllTasks
+  saveTask.onclick = saveTasks
 }
 
 //remova uma task ao clicar duas vezes nela
@@ -101,7 +124,7 @@ window.onload = () => {
 
 // ===                     // SELECIONAR UMA TASK POR VEZ, NÃO ESQUECER!!!
 // ===                     // FAZER O DOUBLE CLICK DA TASK, PARA APARECER A BOLA PRETA, E O TEXTO RISCADO.
-// CLICAR NO SAVE GAME PARA SALVAR AS TASKS COLOCADAS E TODOS OS ESTADOS
+//  ===                     //CLICAR NO SAVE GAME PARA SALVAR AS TASKS COLOCADAS E TODOS OS ESTADOS
 //  ===                     // CLICAR NO REMOVER FINALIZADOS PARA REMOVER AS TASKS FINALIZADAS!!!!!!!!!!
 // ===                     //CLICAR NA LIXEIRA PARA REMOVER TUDO!!!!!!!!
 //===                     // AO ADICIONAR A TASK, FAZER COM QUE O CONTEUDO DO INPUT VOLTE A FICAR VAZIO!!!
