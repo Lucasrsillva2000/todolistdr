@@ -47,11 +47,16 @@ function addTask() {
 
 // remove somente as tasks que estão com o risco preto.
 function removeSelectedTask() {
-  const markedText = document.querySelector('.markedText')
+  const markedText = document.querySelectorAll('.markedText')
 
-  if (markedText) {
+  markedText.forEach(markedText => {
     markedText.remove()
-  }
+  })
+
+  // if (markedText) {
+  //   markedText.remove(markedText)
+  // }
+  saveTasks()
 }
 
 //remove todas as tasks ao clicar na lixeira
@@ -59,6 +64,7 @@ function removeAllTasks() {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild)
   }
+  saveTasks()
 }
 
 //para mover as tasks para cima
@@ -86,19 +92,43 @@ moveTaskDown.addEventListener('click', function () {
 })
 
 //função para usar o localStorage, para salvar o estado atual das tarefas.
+
 function saveTasks() {
-  const tasksArray = Array.from(taskList.children).map(task => task.innerHTML)
+  const tasksArray = Array.from(taskList.children).map(task => ({
+    content: task.innerHTML,
+    isMarked: task.classList.contains('markedText')
+  }))
   localStorage.setItem('tasks', JSON.stringify(tasksArray))
 }
 
 //função para verificar se tem tarefas no localStorage
 function loadTasks() {
   const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]')
-  savedTasks.forEach(taskContent => {
+  savedTasks.forEach(taskData => {
     const content = document.createElement('li')
-    content.innerHTML = taskContent
+    content.innerHTML = taskData.content
     content.classList.add('taskItem')
-    // Aqui, você pode adicionar os listeners necessários ao LI (click e dblclick)
+    if (taskData.isMarked) {
+      content.classList.add('markedText')
+    }
+    content.addEventListener('click', function () {
+      const previousLiSelected = document.querySelector('.selectedItem')
+      if (previousLiSelected) {
+        previousLiSelected.classList.remove('selectedItem')
+      }
+      content.classList.add('selectedItem')
+    })
+    content.addEventListener('dblclick', function () {
+      if (content.classList.contains('markedText')) {
+        content.classList.remove('markedText')
+      } else {
+        const markedText = document.querySelector('.selectedItem')
+        if (markedText) {
+          markedText.classList.remove('markedText')
+        }
+        markedText.classList.add('markedText')
+      }
+    })
     taskList.appendChild(content)
   })
 }
@@ -125,9 +155,12 @@ window.onload = () => {
 // ===                     // SELECIONAR UMA TASK POR VEZ, NÃO ESQUECER!!!
 // ===                     // FAZER O DOUBLE CLICK DA TASK, PARA APARECER A BOLA PRETA, E O TEXTO RISCADO.
 //  ===                     //CLICAR NO SAVE GAME PARA SALVAR AS TASKS COLOCADAS E TODOS OS ESTADOS
-//  ===                     // CLICAR NO REMOVER FINALIZADOS PARA REMOVER AS TASKS FINALIZADAS!!!!!!!!!!
+//  ===                     //CLICAR NO REMOVER FINALIZADOS PARA REMOVER AS TASKS FINALIZADAS!!!!!!!!!! TODAS AS TASKS FINALIZADAS NÃO SÓ UMA POR VEZ
 // ===                     //CLICAR NA LIXEIRA PARA REMOVER TUDO!!!!!!!!
 //===                     // AO ADICIONAR A TASK, FAZER COM QUE O CONTEUDO DO INPUT VOLTE A FICAR VAZIO!!!
+// ===                     //  MANTER O REMOVER LA EM CIMA QUANDO ADICIONAR AS TASKS
+// ===                     // ARRUMAR O CSS, COLOCANDO UM ESTILO MELHOR NA LISTA
 // ADICIONAR O TOGGLE NAS SETAS (CLASSLIST.TOGGLE)
+// COLOCAR O ICONE
 
 //NÃO SER UM MERDA, PESQUISE E CONFIA NO CÓDIGO QUE FOI FEITO AQUI.
